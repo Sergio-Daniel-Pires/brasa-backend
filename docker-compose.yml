@@ -1,0 +1,10 @@
+version: '3'
+services:
+  flask-template:
+    container_name: flask-template
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    command: [ "gunicorn", "-c", "/flask-template/gunicorn_config.py", "app:app" ]

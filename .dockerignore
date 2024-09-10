@@ -1,0 +1,11 @@
+# IDE files
+**/.vscode/
+
+# Python temporary files
+**/__pycache__/
+**/*.ipynb_checkpoints/
+**/*.ipynb
+
+# Git files
+**/.git/
+**/README.md
