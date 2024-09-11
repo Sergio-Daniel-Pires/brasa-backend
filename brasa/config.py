@@ -1,7 +1,11 @@
 import os
 
+import dotenv
+
+# Load .env vars
+dotenv.load_dotenv("brasa/.dev.env", override=False)
+
 # Flask Config
-FLASK_API_VERSION = os.environ["FLASK_API_VERSION"]
 FLASK_ENV = os.environ["FLASK_ENV"]
 FLASK_SECRET_KEY = os.environ["FLASK_SECRET_KEY"]
 

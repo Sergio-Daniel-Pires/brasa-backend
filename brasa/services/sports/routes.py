@@ -1,9 +1,9 @@
-import json
+from typing import Any
 
-import flask
 from flask_restx import Namespace, Resource
 
-from project.utils.middleware import middleware
+from brasa.services.sports.methods import retrieve_sports
+from brasa.utils.middleware import middleware
 
 sports_ns = Namespace("Sport", description="Returned mapped sports")
 
@@ -13,4 +13,4 @@ class ListSports(Resource):
     @sports_ns.doc()
     @middleware()
     def get(self, user_data: dict[str, Any]):
-        return retrieve_sports(user_data)
+        return retrieve_sports()

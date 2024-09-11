@@ -1,10 +1,22 @@
-version: '3'
 services:
-  flask-template:
-    container_name: flask-template
+  brasa-db-migration:
+    container_name: brasa-db-migration
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: scraper.Dockerfile
+    volumes:
+      - .:/project
+    command: [ "python3", "brasa/utils/register_bots.py" ]
+
+  brasa-backend:
+    container_name: brasa-backend
+    depends_on:
+      - brasa-db-migration
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    volumes:
+      - .:/project
     ports:
       - 8000:8000
-    command: [ "gunicorn", "-c", "/flask-template/gunicorn_config.py", "app:app" ]
+    command: [ "gunicorn", "-c", "gunicorn_config.py", "app:app" ]

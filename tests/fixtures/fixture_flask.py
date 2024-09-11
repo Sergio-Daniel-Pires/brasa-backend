@@ -1,6 +1,6 @@
 import pytest
 
-from project import app as _app
+from brasa import app as _app
 
 
 @pytest.fixture(scope="session")

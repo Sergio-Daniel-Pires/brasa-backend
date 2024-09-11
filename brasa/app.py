@@ -7,9 +7,9 @@ dotenv.load_dotenv(".dev.env", override=False)
 from flask import Flask
 from flask_restx import Api
 
-from project.services.events.routes import events_ns
-from project.services.sports.routes import sports_ns
-from _version import __version__ as API_VERSION
+from brasa._version import __version__ as API_VERSION
+from brasa.services.events.routes import events_ns
+from brasa.services.sports.routes import sports_ns
 
 # Create flask swagger API
 api = Api(

@@ -1,5 +1,5 @@
 [project]
-name = "brasa-backend"
+name = "brasa"
 requires-python = ">=3.10"
 authors = [{ name="Sergio Pires", email="sergiodanpires@gmail.com" }]
 description = "A simple backend for brasa app"
@@ -14,8 +14,10 @@ classifiers = [
 dynamic = ["version"]
 dependencies = [
   "flask>=3.0.3",
-  "flask>=1.3.0",
-  "pymongo>=4.7.2",
+  "flask_restx>=1.3.0",
+  "gunicorn>=22.0.0",
+  "gevent>=24.2.1",
+  "pymongo>=4.8.0",
   "dataclasses_json>=0.6.6",
   "requests==2.31.0",
   "redis==5.0.4",
@@ -25,10 +27,20 @@ dependencies = [
   "prometheus_client==0.20.0"
 ]
 
+[tool.setuptools]
+packages = []
+
+[tool.setuptools.dynamic]
+version = {attr = "brasa.__version__"}
+
 [project.urls]
 repository = "https://github.com/Sergio-Daniel-Pires/brasa-backend"
 
 [project.optional-dependencies]
 test = [
   "pytest==7.4.2"
+]
+
+scraper = [
+  "playwright==1.41.2"
 ]

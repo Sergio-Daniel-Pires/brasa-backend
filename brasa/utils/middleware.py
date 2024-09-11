@@ -1,12 +1,9 @@
+import functools
 import logging
 import traceback
 from collections.abc import Callable
-import functools
-import json
 
 import flask
-
-import logging
 
 
 def middleware(send_user_data: bool = True):
@@ -19,10 +16,9 @@ def middleware(send_user_data: bool = True):
             try:
                 if send_user_data:
                     user_data = dict(flask.request.form)
-                    user_data = dict(json.loads(flask.request.data))
                     user_data.update(flask.request.files)
 
-                    args = [ user_data ] + args
+                    args = ( args[0], user_data, ) + args[1:]
 
 
                 result = func(*args, **kwargs)
@@ -34,7 +30,7 @@ def middleware(send_user_data: bool = True):
                 response["result"] = result
 
             except Exception as exc:
-                logging.error(traceback.format_exc)
+                logging.error(traceback.format_exc())
                 status_code = 400
                 response["message"] = f"{type(exc).__name__} Error: {exc}"
 
@@ -42,3 +38,5 @@ def middleware(send_user_data: bool = True):
             return response, status_code
 
         return wrapper
+    
+    return _middleware

@@ -1,10 +1,4 @@
-import dotenv
-
-# Load .env vars
-dotenv.load_dotenv(".prod.env", override=False)
-dotenv.load_dotenv(".dev.env", override=False)
-
-from project.utils import config as conf
+from brasa import config as conf
 
 bind = conf.GUNICORN_BIND
 workers = conf.GUNICORN_WORKERS

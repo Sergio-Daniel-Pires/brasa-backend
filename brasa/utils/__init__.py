@@ -1,7 +1,10 @@
+from typing import cast
+
 import pymongo
 import pymongo.collection
-import config
-from typing import cast
+
+from brasa import config
+
 
 def find_collection(collection: str) -> pymongo.collection.Collection:
     client = pymongo.MongoClient(config.MONGO_CONN)
