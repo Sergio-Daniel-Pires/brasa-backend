@@ -24,14 +24,11 @@ dependencies = [
   "requests==2.31.0",
   "pytz==2021.3",
   "python-dotenv==1.0.0",
-  "prometheus_client==0.20.0"
+  "prometheus_client==0.20.0",
 ]
 
 [tool.setuptools]
 packages = []
-
-[tool.setuptools.dynamic]
-version = {attr = "brasa.__version__"}
 
 [project.urls]
 repository = "https://github.com/Sergio-Daniel-Pires/brasa-backend"

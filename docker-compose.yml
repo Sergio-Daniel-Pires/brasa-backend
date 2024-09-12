@@ -17,6 +17,17 @@ services:
       dockerfile: backend.Dockerfile
     volumes:
       - .:/project
+      - logs-volume:/var/log
     ports:
       - 8000:8000
     command: [ "gunicorn", "-c", "gunicorn_config.py", "app:app" ]
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml
+      - logs-volume:/var/log
+
+volumes:
+    logs-volume: 

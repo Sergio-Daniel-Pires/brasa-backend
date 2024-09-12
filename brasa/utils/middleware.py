@@ -1,9 +1,13 @@
 import functools
-import logging
 import traceback
+import uuid
 from collections.abc import Callable
 
 import flask
+from flask import g, request
+
+from brasa import metrics_collector as mc
+from brasa.utils.logger import log
 
 
 def middleware(send_user_data: bool = True):
@@ -11,7 +15,8 @@ def middleware(send_user_data: bool = True):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             status_code = 200
-            response = { "result": None, "message": "Ok" }
+            g.request_id = str(uuid.uuid4()).replace("-", "")[0:12]
+            response = { "result": None, "message": "Ok", "request_id": g.request_id }
 
             try:
                 if send_user_data:
@@ -21,7 +26,9 @@ def middleware(send_user_data: bool = True):
                     args = ( args[0], user_data, ) + args[1:]
 
 
+                log.info("Starting request")
                 result = func(*args, **kwargs)
+                log.info("Finished request")
 
                 # Return file
                 if isinstance(result, flask.Response):
@@ -30,13 +37,22 @@ def middleware(send_user_data: bool = True):
                 response["result"] = result
 
             except Exception as exc:
-                logging.error(traceback.format_exc())
+                log.error(traceback.format_exc())
                 status_code = 400
                 response["message"] = f"{type(exc).__name__} Error: {exc}"
+
+            finally:
+                route = request.path
+
+                if status_code < 400:
+                    mc.inc_route_ok(route)  # Incrementa o contador de sucesso
+
+                else:
+                    mc.inc_route_error(route, status_code)
 
             # Return json
             return response, status_code
 
         return wrapper
-    
+
     return _middleware

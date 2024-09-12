@@ -1,6 +1,6 @@
 from python:3.12-slim
 
-ENV PYTHONPATH "${PYTHONPATH}:/brasa"
+ENV PYTHONPATH "${PYTHONPATH}:/project/brasa"
 
 WORKDIR /project
 
@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PLAYWRIGHT_BROWSERS_PATH=/app/ms-playwright
 
-COPY pyproject.toml *.env ./
+COPY pyproject.toml ./
 
 RUN pip install .[scraper]
 
